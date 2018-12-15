@@ -1,0 +1,2 @@
+cat /var/run/sshd.pid
+service sshd status | grep "Main PID" | awk '{print $3}'

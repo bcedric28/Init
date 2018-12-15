@@ -1,0 +1,2 @@
+ su [utilisateur] 
+ ssh [utilisateur@hostname]

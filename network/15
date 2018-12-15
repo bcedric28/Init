@@ -1,0 +1,1 @@
+Il faut rajouter dans etc/host l'adresse 46.19.122.85 avec les autres hosts echo "46.19.122.85" -> ect/hosts intra.42-> ect/host

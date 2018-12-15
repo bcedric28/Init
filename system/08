@@ -1,0 +1,1 @@
+On peut le configurer /etc/ssh/sshd_config et les clefs se trouvent dans /home/user/.ssh/authorized_keys
