@@ -89,6 +89,7 @@ elif (($ans == 3)) ; then
 	sleep 1
 	printf ".\n"
 	rm -rf ~/Downloads/*
+	rm -rf ~/Downloads/.DS_Store
 	echo "\033[4mSuppression downloads complete...$RESTORE"
 	sleep 0.4
 	echo "\033[1m\033[92mSuccess!$RESTORE"
