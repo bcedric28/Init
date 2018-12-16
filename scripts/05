@@ -2,49 +2,84 @@ LM=$(echo '\033[95m')
 RESTORE=$(echo '\033[0m')
 CYAN=$(echo '\033[36m')
 trash="ls ~/.Trash | wc -l | tr -d ' '"
-cache="ls ~/.Library/*cache* | wc -l | tr -d ' '"
+cache="ls ~/Library/*cache* | wc -l | tr -d ' '"
 downl="ls ~/Downloads | wc -l | tr -d ' '"
 downlf=$(eval $downl)
 cachef=$(eval $cache)
 trashf=$(eval $trash)
+trashls="ls -la ~/.Trash"
+trashlse=$(eval $trashls)
+cachesize="du -sh ~/Library | cut -f1 | tr -d ' '"
+cachesizee=$(eval $cachesize)
+yes='[y]'
+trashsize="du -sh ~/.Trash | cut -f1 | tr -d ' '"
+trashsizee=$(eval $trashsize)
+downlsize="du -sh ~/Downloads | cut -f1 | tr -d ' '"
+downlsizee=$(eval $downlsize)
 echo "$CYAN"
 clear
 echo "What do you want to delete?$RESTORE"
 echo "\033[95mTo delete your...$RESTORE"
-echo "Cache: 1 ($cachef files)"
-echo "Trash: 2 ($trashf files)"
-echo "Downloads: 3 ($downlf files)"
+echo "Cache: 1 ($cachef files) ($cachesizee)"
+echo "Trash: 2 ($trashf files) ($trashsizee)"
+echo "Downloads: 3 ($downlf files) ($downlsizee)"
 echo "Quit: q"
 printf "\n"
 read -p $'\e[7mDelete\e[0m: ' ans
 if (($ans == 1)) ; then
-	clear
-	echo "\033[1m\033[91mSuppression des fichiers$RESTORE"
-	printf "."
-	sleep 1
-	printf "."
-	sleep 1
-	printf ".\n"
-	rm -rf ~/Library/*cache*
-	echo "\033[4mSuppression cache complete..."
-	sleep 0.4
-	echo "\033[1m\033[92mSuccess!$RESTORE"
-	sleep 1.5
-	sh $0
+	if (($cachef == 0)) ; then
+		clear
+		echo "\033[1m\033[91mIl n'y a rien a supprimer !$RESTORE"
+		sleep 1.5
+		sh $0
+	elif (($cache != 0)) ; then
+		clear
+		echo "\033[1m\033[91mSuppression des fichiers$RESTORE"
+		printf "."
+		sleep 1
+		printf "."
+		sleep 1
+		printf ".\n"
+		rm -rf ~/Library/*cache*
+		echo "\033[4mSuppression cache complete..."
+		sleep 0.4
+		echo "\033[1m\033[92mSuccess!$RESTORE"
+		sleep 1.5
+		sh $0
+		fi
 elif (($ans == 2)) ; then
-	clear
-	echo "\033[1m\033[91mSuppression des fichiers$RESTORE"
-	printf "."
-	sleep 1
-	printf "."
-	sleep 1
-	printf ".\n"
-	rm -rf ~/.Trash/*
-	echo "\033[4mSuppression trash complete...$RESTORE"
-	sleep 0.4
-	echo "\033[1m\033[92mSuccess!$RESTORE"
-	sleep 1.5
-	sh $0
+	if (($trashf == 0)) ; then
+		clear
+		echo "\033[1m\033[91mIl n'y a rien a supprimer !$RESTORE"
+		sleep 1.5
+		sh $0
+	else
+		echo "\033[95mYou are about to delete :$RESTORE"
+		sleep 0.3
+		echo "$trashlse"
+		sleep 0.2
+		echo "Are you sur to Delete all files ?"
+		read -p "Enter y or n :" nom
+		if [[ "$nom" == $yes ]] ; then
+			clear
+			echo "\033[1m\033[91mSuppression des fichiers$RESTORE"
+			printf "."
+			sleep 1
+			printf "."
+			sleep 1
+			printf ".\n"
+			rm -rf ~/.Trash/*
+			rm -rf ~/.Trash/.DS_Store
+			echo "\033[4mSuppression trash complete...$RESTORE"
+			sleep 0.4
+			echo "\033[1m\033[92mSuccess!$RESTORE"
+			sleep 1.5
+			sh $0
+		else
+			clear
+			sh $0
+			fi
+		fi	
 elif (($ans == 3)) ; then
 	clear
 	echo "\033[1m\033[91mSuppression des fichiers$RESTORE"
@@ -110,7 +145,7 @@ elif (($ans == 23 || $ans == 32)) ; then
 	echo "\033[1m\033[92mSuccess!$RESTORE"
 	sleep 1.5
 	sh $0
-elif (($ans == 123)) ; then
+elif (($ans == 123 || $ans == 321 || $ans == 213 || $ans == 231)) ; then
 	clear
 	echo "\033[1m\033[91mSuppression des fichiers$RESTORE"
 	printf "."
