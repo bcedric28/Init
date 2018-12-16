@@ -1,0 +1,133 @@
+LM=$(echo '\033[95m')
+RESTORE=$(echo '\033[0m')
+CYAN=$(echo '\033[36m')
+echo "$CYAN"
+clear
+echo "What do you want to delete?$RESTORE"
+echo "\033[95mTo delete your...$RESTORE"
+echo "Cache: 1"
+echo "Trash: 2"
+echo "Downloads: 3"
+echo "Quit: q"
+printf "\n"
+read -p $'\e[7mDelete\e[0m: ' ans
+if (($ans == 1)) ; then
+	clear
+	echo "\033[1m\033[91mSuppression des fichiers$RESTORE"
+	printf "."
+	sleep 1
+	printf "."
+	sleep 1
+	printf ".\n"
+	rm -rf ~/Library/*cache*
+	echo "\033[4mSuppression cache complete..."
+	sleep 0.4
+	echo "\033[1m\033[92mSuccess!$RESTORE"
+	sleep 1.5
+	sh $0
+elif (($ans == 2)) ; then
+	clear
+	echo "\033[1m\033[91mSuppression des fichiers$RESTORE"
+	printf "."
+	sleep 1
+	printf "."
+	sleep 1
+	printf ".\n"
+	rm -rf ~/.Trash/*
+	echo "\033[4mSuppression trash complete...$RESTORE"
+	sleep 0.4
+	echo "\033[1m\033[92mSuccess!$RESTORE"
+	sleep 1.5
+	sh $0
+elif (($ans == 3)) ; then
+	clear
+	echo "\033[1m\033[91mSuppression des fichiers$RESTORE"
+	printf "."
+	sleep 1
+	printf "."
+	sleep 1
+	printf ".\n"
+	rm -rf ~/Downloads/*
+	echo "\033[4mSuppression downloads complete...$RESTORE"
+	sleep 0.4
+	echo "\033[1m\033[92mSuccess!$RESTORE"
+	sleep 1.5
+	sh $0
+elif (($ans == 12 || $ans == 21)) ; then
+	clear
+	echo "\033[1m\033[91mSuppression des fichiers$RESTORE"
+	printf "."
+	sleep 1
+	printf "."
+	sleep 1
+	printf ".\n"
+	rm -rf ~/Library/*cache*
+	rm -rf ~/.Trash/*
+	echo "\033[4mSuppression cache complete..."
+	sleep 0.6
+	echo "Suppression trash complete...$RESTORE"
+	sleep 0.6
+	echo "\033[1m\033[92mSuccess!$RESTORE"
+	sleep 1.5
+	sh $0
+elif (($ans == 13 || $ans == 31)) ; then
+	clear
+	echo "\033[1m\033[91mSuppression des fichiers$RESTORE"
+	printf "."
+	sleep 1
+	printf "."
+	sleep 1
+	printf ".\n"
+	rm -rf ~/Library/*cache*
+	rm -rf ~/Downloads/*
+	echo "\033[4mSuppression cache complete..."
+	sleep 0.6
+	echo "Suppression downloads complete...$RESTORE"
+	sleep 0.6
+	echo "\033[1m\033[92mSuccess!$RESTORE"
+	sleep 1.5
+	sh $0
+elif (($ans == 23 || $ans == 32)) ; then
+	clear
+	echo "\033[1m\033[91mSuppression des fichiers$RESTORE"
+	printf "."
+	sleep 1
+	printf "."
+	sleep 1
+	printf ".\n"
+	rm -rf ~/.Trash/*
+	echo "\033[4mSuppression trash complete..."
+	sleep 0.8
+	rm -rf ~/Downloads/*
+	echo "Suppression Downloads complete...$RESTORE"
+	sleep 1
+	echo "\033[1m\033[92mSuccess!$RESTORE"
+	sleep 1.5
+	sh $0
+elif (($ans == 123)) ; then
+	clear
+	echo "\033[1m\033[91mSuppression des fichiers$RESTORE"
+	printf "."
+	sleep 1
+	printf "."
+	sleep 1
+	printf ".\n"
+	rm -rf ~/Library/*cache*
+	echo "\033[4mSuppression cache complete..."
+	sleep 0.8
+	rm -rf ~/.Trash/*
+	echo "Suppression trash complete..."
+	sleep 0.8
+	rm -rf ~/Downloads/*
+	echo "Suppression Downloads complete...$RESTORE"
+	sleep 1
+	echo "\033[1m\033[92mSuccess!$RESTORE"
+	sleep 1.5
+	sh $0
+elif (($ans == q)) ; then
+	exit ;
+else 
+	echo "\033[91mNo File ...$RESTORE"
+	sleep 1
+	sh $0
+fi
