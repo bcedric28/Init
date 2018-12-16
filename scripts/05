@@ -1,13 +1,19 @@
 LM=$(echo '\033[95m')
 RESTORE=$(echo '\033[0m')
 CYAN=$(echo '\033[36m')
+trash="ls ~/.Trash | wc -l | tr -d ' '"
+cache="ls ~/.Library/*cache* | wc -l | tr -d ' '"
+downl="ls ~/Downloads | wc -l | tr -d ' '"
+downlf=$(eval $downl)
+cachef=$(eval $cache)
+trashf=$(eval $trash)
 echo "$CYAN"
 clear
 echo "What do you want to delete?$RESTORE"
 echo "\033[95mTo delete your...$RESTORE"
-echo "Cache: 1"
-echo "Trash: 2"
-echo "Downloads: 3"
+echo "Cache: 1 ($cachef files)"
+echo "Trash: 2 ($trashf files)"
+echo "Downloads: 3 ($downlf files)"
 echo "Quit: q"
 printf "\n"
 read -p $'\e[7mDelete\e[0m: ' ans
