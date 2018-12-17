@@ -1,0 +1,3 @@
+echo Entrez le user_name :
+read nom
+userdel $nom
