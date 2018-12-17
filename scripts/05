@@ -1,17 +1,39 @@
+BIG=$PWD
 LM=$(echo '\033[95m')
 RESTORE=$(echo '\033[0m')
 CYAN=$(echo '\033[36m')
 trash="ls ~/.Trash | wc -l | tr -d ' '"
-cache="ls ~/Library/*cache* | wc -l | tr -d ' '"
+trashDS="ls ~/.Trash/.DS_Store | wc -l | tr -d ' '"
+trashDSE=$(eval $trashDS)
+downDS="ls ~/Download/.DS_Store | wc -l | tr -d ' '"
+downDSE=$(eval $downDS)
+cache="ls ~/Library/Caches/ | wc -l | tr -d ' '"
 downl="ls ~/Downloads | wc -l | tr -d ' '"
 downlf=$(eval $downl)
+down1=$(($downlf + $downDSE))
 cachef=$(eval $cache)
+cacheDS="ls ~/Library/Caches/*.DS_Store | wc -l | tr -d ' '"
+cacheDSE=$(eval $cacheDS)
+cache1=$(($cachef + $cacheDSE))
+cachepath="ls -l -d -1 ~/Library/Caches"
+cachepathe=$(eval $cachepath)
 trashf=$(eval $trash)
+trash1=$(($trashf + $trashDSE))
 trashls="ls -la ~/.Trash"
+trashpath="ls -la -d -1 ~/.Trash"
+trashpathe=$(eval $trashpath)
 trashlse=$(eval $trashls)
-cachesize="du -sh ~/Library | cut -f1 | tr -d ' '"
+downpath="ls -la -d -1 ~/Downloads"
+downpathe=$(eval $downpath)
+downls="ls -la ~/Downloads"
+cachels="ls -la ~/Library/Caches/"
+cachelse=$(eval $cachels)
+downlse=$(eval $downls)
+cachesize="du -sh ~/Library/Caches/ | cut -f1 | tr -d ' '"
 cachesizee=$(eval $cachesize)
 yes='[y]'
+no='[n]'
+Exit='[q]'
 trashsize="du -sh ~/.Trash | cut -f1 | tr -d ' '"
 trashsizee=$(eval $trashsize)
 downlsize="du -sh ~/Downloads | cut -f1 | tr -d ' '"
@@ -20,46 +42,95 @@ echo "$CYAN"
 clear
 echo "What do you want to delete?$RESTORE"
 echo "\033[95mTo delete your...$RESTORE"
-echo "Cache: 1 ($cachef files) ($cachesizee)"
-echo "Trash: 2 ($trashf files) ($trashsizee)"
-echo "Downloads: 3 ($downlf files) ($downlsizee)"
+echo "Cache: 1 ($cache1 files) ($cachesizee)"
+echo "Trash: 2 ($trash1 files) ($trashsizee)"
+echo "Downloads: 3 ($down1 files) ($downlsizee)"
 echo "Quit: q"
 printf "\n"
 read -p $'\e[7mDelete\e[0m: ' ans
 if (($ans == 1)) ; then
-	if (($cachef == 0)) ; then
-		clear
-		echo "\033[1m\033[91mIl n'y a rien a supprimer !$RESTORE"
-		sleep 1.5
-		sh $0
-	elif (($cache != 0)) ; then
-		clear
-		echo "\033[1m\033[91mSuppression des fichiers$RESTORE"
-		printf "."
-		sleep 1
-		printf "."
-		sleep 1
-		printf ".\n"
-		rm -rf ~/Library/*cache*
-		echo "\033[4mSuppression cache complete..."
-		sleep 0.4
-		echo "\033[1m\033[92mSuccess!$RESTORE"
-		sleep 1.5
-		sh $0
-		fi
-elif (($ans == 2)) ; then
-	if (($trashf == 0)) ; then
+	if (($cache1 == 0)) ; then
 		clear
 		echo "\033[1m\033[91mIl n'y a rien a supprimer !$RESTORE"
 		sleep 1.5
 		sh $0
 	else
+		clear
+		echo "\033[95mYour are about to delete :$RESTORE"
+		sleep 0.3
+		printf "\n"
+		echo "$cachepathe"
+		echo "----------------------------"
+		echo "$cachelse"
+		sleep 0.2
+		echo "Are you sure to Delete all files ?"
+		read -p "Enter y or n or press "q" to back to the menu :" nom
+		if [[ "$nom" == $yes ]] ; then
+			clear
+			echo "\033[1m\033[91mSuppression des fichiers$RESTORE"
+			printf "."
+			sleep 1
+			printf "."
+			sleep 1
+			printf ".\n"
+			rm -rf ~/Library/*cache*
+			rm -rf ~/Library/Caches/*
+			rm -rf ~/Library/Caches/*.DS_Store
+			echo "\033[4mSuppression cache complete..."
+			sleep 0.4
+			echo "\033[1m\033[92mSuccess!$RESTORE"
+			sleep 1.5
+			sh $0
+		elif [[ "$nom" == $no ]] ; then
+			clear
+			echo "$cachepathe"
+			echo "--------------------------"
+			echo "$cachelse"
+			printf "\n"
+			echo "\033[91mPress "q" to go back to the menu$RESTORE"
+			printf "\n"
+			echo "\033[93mWhat file(s) do you want to no delete ? :$RESTORE"
+			read delete
+			if [[ "$delete" == $Exit ]] ; then
+				clear
+				sh $0
+			else
+				cd ~
+				mkdir tempcash
+				cd ~/Library/Caches
+				mv $delete ~/tempcash
+				rm -rf *
+				rm -rf *.DS_Store
+				cd ~
+				cd ~/tempcash
+				mv $delete ../Library/Caches
+				rm -rf ~/tempcash
+				cd $BIG
+				sh $0
+				fi
+		else
+			clear
+			sh $0
+			fi
+		fi	
+elif (($ans == 2)) ; then
+	if (($trash1 == 0)) ; then
+		clear
+		echo "\033[1m\033[91mIl n'y a rien a supprimer !$RESTORE"
+		sleep 1.5
+		sh $0
+	else
+		clear
 		echo "\033[95mYou are about to delete :$RESTORE"
 		sleep 0.3
+		printf "\n"
+		echo "$trashpathe"
+		echo "----------------------------"
 		echo "$trashlse"
 		sleep 0.2
+		printf "\n"
 		echo "Are you sur to Delete all files ?"
-		read -p "Enter y or n :" nom
+		read -p "Enter y or n or "q" to back to the menu :" nom
 		if [[ "$nom" == $yes ]] ; then
 			clear
 			echo "\033[1m\033[91mSuppression des fichiers$RESTORE"
@@ -75,26 +146,102 @@ elif (($ans == 2)) ; then
 			echo "\033[1m\033[92mSuccess!$RESTORE"
 			sleep 1.5
 			sh $0
+		elif [[ "$nom" == $no ]] ; then
+			clear
+			echo "$trashpathe"
+			echo "-------------------------"
+			echo "$trashlse"
+			printf "\n"
+			echo "\033[91mPress "q" to go back to the menu$RESTORE"
+			printf "\n"
+			echo "\033[93mWhat file(s) do you want to no delete ? :$RESTORE"
+			read delete
+			if [[ "$delete" == $Exit ]] ; then
+				clear
+				sh $0
+			else
+				cd
+				mkdir Trash
+				cd ~/.Trash
+				mv $delete ../Trash
+				rm -rf *
+				rm -rf .DS_Store
+				cd ../Trash
+				mv $delete ../.Trash
+				cd
+				rm -rf Trash
+				cd $BIG
+				sh $0
+				fi 
 		else
 			clear
 			sh $0
 			fi
 		fi	
 elif (($ans == 3)) ; then
-	clear
-	echo "\033[1m\033[91mSuppression des fichiers$RESTORE"
-	printf "."
-	sleep 1
-	printf "."
-	sleep 1
-	printf ".\n"
-	rm -rf ~/Downloads/*
-	rm -rf ~/Downloads/.DS_Store
-	echo "\033[4mSuppression downloads complete...$RESTORE"
-	sleep 0.4
-	echo "\033[1m\033[92mSuccess!$RESTORE"
-	sleep 1.5
-	sh $0
+	if (($down1 == 0)) ;  then
+		clear
+		echo "\033[1m\033[91mIl n'y a rien a supprimer !$RESTORE"
+		sleep 1.5
+		sh $0
+	else
+		echo "\033[95mYou are about to delete :$RESTORE"
+		sleep 0.3
+		printf "\n"
+		echo "$downpathe"
+		echo "----------------------------"
+		echo "$downlse"
+		sleep 0.2
+		printf "\n"
+		echo "Are you sur to Delete all files ?"
+		read -p "Enter y or n or "q" to back to the menu :" nom
+		if [[ "$nom" == $yes ]] ; then
+			clear
+			echo "\033[1m\033[91mSuppression des fichiers$RESTORE"
+			printf "."
+			sleep 1
+			printf "."
+			sleep 1
+			printf ".\n"
+			rm -rf ~/Downloads/*
+			rm -rf ~/Downloads/.DS_Store
+			echo "\033[4mSuppression downloads complete...$RESTORE"
+			sleep 0.4
+			echo "\033[1m\033[92mSuccess!$RESTORE"
+			sleep 1.5
+			sh $0
+		elif [[ "$nom" == $no ]] ; then
+			clear
+			echo "$downpathe"
+			echo "-----------------------"
+			echo "$downlse"
+			printf "\n"
+			echo "\033[91mPress "q" to go back to the menu$RESTORE"
+			printf "\n"
+			echo "\033[93mWhat file(s) do you want to no delete ? :$RESTORE"
+			read delete
+			if [[ "$delete" == $Exit ]] ; then
+				clear
+				sh $0
+			else
+				cd
+				mkdir Download_
+				cd ~/Downloads
+				mv $delete ../Download_
+				rm -rf *
+				rm -rf *.DS_Store
+				cd ../Download_
+				mv $delete ../Downloads
+				cd
+				rm -rf Download_
+				cd $BIG
+				sh $0
+				fi
+		else
+			clear
+			sh $0
+			fi
+		fi	
 elif (($ans == 12 || $ans == 21)) ; then
 	clear
 	echo "\033[1m\033[91mSuppression des fichiers$RESTORE"
