@@ -82,13 +82,13 @@ for (( elapsed=1; elapsed<=$duration; elapsed++ ))
 do
 	color=$((($elapsed*100)/$duration))
 	if (($color <= 25)) ; then
-		colorvar="\033[93m"
+		colorvar='\033[93m'
 	elif (($color > 25 && $color <=50)) ; then
-		colorvar="\033[33m"
+		colorvar='\033[33m'
 	elif (($color > 50 && $color <=75))
-		colorvar="\033[96m"
+		colorvar='\033[96m'
 	else
-		colorvar="\033[92m"
+		colorvar='\033[92m'
 	fi
   # Elapsed
 prev_bar=$curr_bar
@@ -102,7 +102,7 @@ prev_bar=$curr_bar
   [[ $(($barsize-$curr_bar)) -eq 1 ]] && let curr_bar++
   [[ $curr_bar -lt $barsize ]] || curr_bar=$barsize
   for (( filled=0; filled<=$curr_bar; filled++ )); do
-    printf "$colorvar▇$RESTORE"
+    printf "${colorvar}▇$RESTORE"
   done
 
   # Remaining
