@@ -82,7 +82,7 @@ for (( elapsed=1; elapsed<=$duration; elapsed++ ))
 do
 	color=$((($elapsed*100)/$duration))
 	if (($color <= 25)) ; then
-		colorvar='\033[95m'
+		colorvar='\033[93m'
 	elif (($color > 25 && $color <=50)) ; then
 		colorvar='\033[33m'
 	elif (($color > 50 && $color <=75))
