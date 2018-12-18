@@ -89,6 +89,7 @@ do
 		colorvar="\033[96m"
 	else
 		colorvar="\033[92m"
+	fi
   # Elapsed
 prev_bar=$curr_bar
   let curr_bar+=$unity
