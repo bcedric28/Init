@@ -4,6 +4,7 @@ clear
 
 BIG=$PWD
 LM=$(echo '\033[95m')
+GREENG='\033[1m\033[92m'
 RESTORE=$(echo '\033[0m')
 CYAN=$(echo '\033[36m')
 
@@ -85,11 +86,11 @@ do
 		colorvar='\033[93m'
 	elif (($color > 25 && $color <=50)) ; then
 		colorvar='\033[33m'
-	elif (($color > 50 && $color <=75))
+	elif (($color > 50 && $color <=75)) ; then
 		colorvar='\033[96m'
 	else
 		colorvar='\033[92m'
-	fi
+		fi
   # Elapsed
 prev_bar=$curr_bar
   let curr_bar+=$unity
@@ -137,8 +138,8 @@ fonct_1()
 		echo "$cachelse"
 		sleep 0.2
 		printf "\n"
-		echo "\033[1m\033[91mAre you sure to Delete all files ?$RESTORE"
-		read -p $'	\033[93mEnter y or n or press "q" to back to the menu\033[0m :' nom
+		echo "${GREENG}Are you sure to Delete all files ?$RESTORE"
+		read -p $' \033[93mEnter y or n or press "q" to back to the menu\033[0m :' nom
 		if [[ "$nom" == $yes ]] ; then
 			clear
 			echo "\033[1m\033[91mSuppression des fichiers$RESTORE"
@@ -152,7 +153,7 @@ fonct_1()
 			rm -rf ~/Library/Caches/*.DS_Store
 			echo "\033[4mSuppression cache complete..."
 			sleep 0.4
-			echo "\033[1m\033[92mSuccess!$RESTORE"
+			echo "${GREENG}Success!$RESTORE"
 			sleep 1.5
 			sh $0
 		elif [[ "$nom" == $no ]] ; then
@@ -206,8 +207,8 @@ fonct_2()
 		echo "$trashlse"
 		sleep 0.2
 		printf "\n"
-		echo "\033[1m\033[92mAre you sure to Delete all files ?$RESTORE"
-		read -p "\033[93mEnter y or n or "q" to back to the menu :$RESTORE" nom
+		echo "${GREENG}Are you sure to Delete all files ?$RESTORE"
+		read -p $'	\033[93mEnter y or n or "q" to back to the menu :\033[0m' nom
 		if [[ "$nom" == $yes ]] ; then
 			param_1=$trash1
 			rm -rf ~/.Trash/*
@@ -215,7 +216,7 @@ fonct_2()
 			ft_load
 			echo "\033[4mSuppression trash complete...$RESTORE"
 			sleep 1
-			echo "\033[1m\033[92mSuccess!$RESTORE"
+			echo "${GREENG}Success!$RESTORE"
 			sleep 1.5
 			sh $0
 		elif [[ "$nom" == $no ]] ; then
@@ -275,7 +276,7 @@ fonct_3()
 		echo "$downlse"
 		sleep 0.2
 		printf "\n"
-		echo "\033[1m\033[92mAre you sur to Delete all files ?$RESTORE"
+		echo "${GREENG}Are you sur to Delete all files ?$RESTORE"
 		read -p "\033[93mEnter y or n or "q" to back to the menu :$RESTORE" nom
 		if [[ "$nom" == $yes ]] ; then
 			clear
@@ -289,7 +290,7 @@ fonct_3()
 			rm -rf ~/Downloads/.DS_Store
 			echo "\033[4mSuppression downloads complete...$RESTORE"
 			sleep 0.4
-			echo "\033[1m\033[92mSuccess!$RESTORE"
+			echo "${GREENG}Success!$RESTORE"
 			sleep 1.5
 			sh $0
 		elif [[ "$nom" == $no ]] ; then
@@ -392,7 +393,7 @@ elif (($ans == 12 || $ans == 21)) ; then
 			printf "\n"
 			echo "\033[4mSuppresion trash complete...$RESTORE"
 			printf "\n"
-			echo "\033[1m\033[92mSuccess!$RESTORE"
+			echo "${GREENG}Success!$RESTORE"
 			sleep 1.5
 			sh $0
 		elif [[ "$nom" == $no ]] ; then
@@ -522,7 +523,7 @@ elif (($ans == 13 || $ans == 31)) ; then
 			printf "\n"
 			echo "\033[4mSuppresion downloads complete...$RESTORE"
 			printf "\n"
-			echo "\033[1m\033[92mSuccess!$RESTORE"
+			echo "${GREENG}Success!$RESTORE"
 			sleep 1.5
 			sh $0
 		elif [[ "$nom" == $no ]] ; then
@@ -651,7 +652,7 @@ elif (($ans == 23 || $ans == 32)) ; then
 			printf "\n"
 			echo "\033[4mSuppresion downloads complete...$RESTORE"
 			printf "\n"
-			echo "\033[1m\033[92mSuccess!$RESTORE"
+			echo "${GREENG}Success!$RESTORE"
 			sleep 1.5
 			sh $0
 		elif [[ "$nom" == $no ]] ; then
@@ -739,7 +740,7 @@ elif (($ans == 123 || $ans == 321 || $ans == 213 || $ans == 231)) ; then
 	rm -rf ~/Downloads/*
 	echo "Suppression Downloads complete...$RESTORE"
 	sleep 1
-	echo "\033[1m\033[92mSuccess!$RESTORE"
+	echo "${GREENG}Success!$RESTORE"
 	sleep 1.5
 	sh $0
 elif (($ans == q)) ; then
