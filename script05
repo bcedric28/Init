@@ -107,10 +107,11 @@ prev_bar=$curr_bar
     printf "${colorvar}▇$RESTORE"
   done
 
+  #barsize1=$(($curr_bar + 150))
   # Remaining
-  for (( remain=$curr_bar; remain<$barsize; remain++ )); do
-    printf " "
-  done
+  #for (( remain=$barsize1; remain<$barsize; remain++ )); do
+   # printf " "
+  #done
 
   # Percentage
   printf "| %s%%" $(( ($elapsed*100)/$duration))
