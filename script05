@@ -287,6 +287,17 @@ fonct_2()
 	fi	
 }
 
+fonct_31()
+{
+	clear
+	down2="ls ~/Downloads | wc -l | tr -d ' '"
+	downf2=$(eval $down2)
+	downDS2="ls ~/Downloads/*.DS_Store | wc -l | tr -d ' '"
+	downDSE2=$(eval $downDS2)
+	down2=$(($downf2 + $downDSE2))
+	clear
+}
+
 fonct_3()
 {
 	if (($down1 == 0)) ;  then
@@ -306,15 +317,17 @@ fonct_3()
 		echo "${GREENG}Are you sur to Delete all files ?$RESTORE"
 		read -p "\033[93mEnter y or n or "q" to back to the menu :$RESTORE" nom
 		if [[ "$nom" == $yes ]] ; then
-			clear
-			echo "\033[1m\033[91mSuppression des fichiers$RESTORE"
-			printf "."
-			sleep 1
-			printf "."
-			sleep 1
-			printf ".\n"
-			rm -rf ~/Downloads/*
-			rm -rf ~/Downloads/.DS_Store
+			fonct_31
+			while (($down2 != 0)) ; do
+				rmf="ls -a ~/Downloads | head -3 | tail -1"
+				rmfe=$(eval $rmf)
+				rm -rf ~/Downloads/"$rmfe" 
+				fonct_31
+				if ((down2 != 0)) ; then
+					param_1=$(((($down1 / $down2) * 100) / $down1))
+					ft_load
+				fi
+			done
 			echo "\033[4mSuppression downloads complete...$RESTORE"
 			sleep 0.4
 			echo "${GREENG}Success!$RESTORE"
