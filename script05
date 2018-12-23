@@ -26,7 +26,7 @@ clear
 
 downl="ls ~/Downloads | wc -l | tr -d ' '"
 downlf=$(eval $downl)
-downDS="ls ~/Download/.DS_Store | wc -l | tr -d ' '"
+downDS="ls ~/Downloads/.DS_Store | wc -l | tr -d ' '"
 downDSE=$(eval $downDS)
 down1=$(($downlf + $downDSE))
 downls="ls -la ~/Downloads"
@@ -52,6 +52,18 @@ cachesizee=$(eval $cachesize)
 
 clear
 
+goinfre="ls ~/goinfre| wc -l | tr -d ' '"
+goinfref=$(eval $goinfre)
+goinfreDS="ls ~/goinfre/*.DS_Store | wc -l | tr -d ' '"
+goinfreDSE=$(eval $goinfreDS)
+goinfre1=$(($goinfref + $goinfreDSE))
+goinfrels="ls -la ~/goinfre"
+goinfrelse=$(eval $goinfrels)
+goinfrepath="ls -l -d -1 ~/goinfre"
+goinfrepathe=$(eval $goinfrepath)
+goinfresize="du -sh ~/goinfre | cut -f1 | tr -d ' '"
+goinfresizee=$(eval $goinfresize)
+
 yes='[y]'
 no='[n]'
 Exit='[q]'
@@ -64,6 +76,7 @@ echo "\033[95mTo delete your...$RESTORE"
 echo "Cache: 1 ($cache1 files) ($cachesizee)"
 echo "Trash: 2 ($trash1 files) ($trashsizee)"
 echo "Downloads: 3 ($down1 files) ($downlsizee)"
+echo "Goinfre: 4 ($goinfre1 files) ($goinfresizee)"
 echo "Quit: q"
 printf "\n"
 read -p $'\e[7mDelete\e[0m: ' ans
@@ -256,11 +269,7 @@ fonct_2()
 				cd
 				mkdir Trash
 				cd ~/.Trash
-				echo $delete
-				sleep 5
 				mv $delete ../Trash/
-				echo $(ls -la ~/.Trash)
-				sleep 5
 				fonct_21
 				while (($trash2 != 0)) ; do
 					rmf="ls -a ~/.Trash | head -3 | tail -1"
@@ -351,9 +360,109 @@ fonct_3()
 				mkdir Download_
 				cd ~/Downloads
 				mv $delete ../Download_
-				rm -rf *
-				rm -rf *.DS_Store
-				cd ../Download_
+				fonct_31
+				while (($down2 != 0)) ; do
+					rmf="ls -a ~/Downloads | head -3 | tail -1"
+					rmfe=$(eval $rmf)
+					rm -rf ~/Downloads/"$rmfe" 
+					fonct_31
+					if ((down2 != 0)) ; then
+						param_1=$(((($down1 / $down2) * 100) / $down1))
+						ft_load
+					fi
+				done
+				cd
+				cd ~/Download_
+				mv $delete ../Downloads
+				cd
+				rm -rf Download_
+				cd $BIG
+				sh $0
+			fi
+		else
+			clear
+			sh $0
+		fi
+	fi	
+}
+
+fonct_41()
+{
+	clear
+	goinfre2="ls ~/goinfre | wc -l | tr -d ' '"
+	goinfref2=$(eval $goinfre2)
+	goinfreDS2="ls ~/goinfre/*.DS_Store | wc -l | tr -d ' '"
+	goinfreDSE2=$(eval $goinfreDS2)
+	goinfre2=$(($goinfref2 + $goinfreDSE2))
+	clear
+}
+
+fonct_4()
+{
+	if (($goinfre1 == 0)) ;  then
+		clear
+		echo "\033[1m\033[91mIl n'y a rien a supprimer !$RESTORE"
+		sleep 1.5
+		sh $0
+	else
+		echo "\033[95mYou are about to delete :$RESTORE"
+		sleep 0.3
+		printf "\n"
+		echo "$goinfrepathe"
+		echo "----------------------------"
+		echo "$goinfrelse"
+		sleep 0.2
+		printf "\n"
+		echo "${GREENG}Are you sur to Delete all files ?$RESTORE"
+		read -p "\033[93mEnter y or n or "q" to back to the menu :$RESTORE" nom
+		if [[ "$nom" == $yes ]] ; then
+			fonct_41
+			while (($goinfre2 != 0)) ; do
+				rmf="ls -a ~/goinfre | head -3 | tail -1"
+				rmfe=$(eval $rmf)
+				rm -rf ~/goinfre/"$rmfe" 
+				fonct_41
+				if ((goinfre2 != 0)) ; then
+					param_1=$(((($goinfre1 / $goinfre2) * 100) / $goinfre1))
+					ft_load
+				fi
+			done
+			echo "\033[4mSuppression goinfre complete...$RESTORE"
+			sleep 0.4
+			echo "${GREENG}Success!$RESTORE"
+			sleep 1.5
+			sh $0
+		elif [[ "$nom" == $no ]] ; then
+			clear
+			echo "$downpathe"
+			echo "-----------------------"
+			echo "$downlse"
+			printf "\n"
+			echo "\033[91mPress "q" to go back to the menu$RESTORE"
+			printf "\n"
+			echo "\033[93mWhat file(s) do you want to no delete ? :$RESTORE"
+			read delete
+			if [[ "$delete" == $Exit ]] ; then
+				clear
+				sh $0
+			else
+				cd
+				mkdir Download_
+				cd ~/Downloads
+				mv $delete ../Download_
+				fonct_31
+				while (($down2 != 0)) ; do
+					rmf="ls -a ~/Downloads | head -3 | tail -1"
+					rmfe=$(eval $rmf)
+					rm -rf ~/Downloads/"$rmfe" 
+					fonct_31
+					if ((down2 != 0)) ; then
+						param_1=$(((($down1 / $down2) * 100) / $down1))
+						ft_load
+					fi
+				done
+				cd
+				cd ~/Download_
 				mv $delete ../Downloads
 				cd
 				rm -rf Download_
@@ -373,6 +482,8 @@ elif (($ans == 2)) ; then
 	fonct_2
 elif (($ans == 3)) ; then
 	fonct_3
+elif (($ans == 4)) ; then
+	fonct_4
 elif (($ans == 12 || $ans == 21)) ; then
 	if (($cache1 == 0 && $trash1 == 0)) ; then
 		clear
